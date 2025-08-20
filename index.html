@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Project Exporter</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 flex items-center justify-center min-h-screen font-sans p-4 transition-colors duration-300">
+    <div class="w-full max-w-2xl mx-auto">
+        <div class="bg-white dark:bg-slate-800/50 backdrop-blur-sm border border-gray-200 dark:border-slate-700/50 rounded-2xl shadow-lg dark:shadow-2xl dark:shadow-slate-950/50 p-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Markdown Project Exporter</h1>
+                <p class="text-slate-500 dark:text-slate-400">Paste your markdown or upload a `.md` file to generate a project ZIP.</p>
+            </div>
+
+            <div id="error-alert" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-6" role="alert">
+                <strong class="font-bold">Error:</strong>
+                <span id="error-message" class="block sm:inline">Something went wrong.</span>
+                <span id="close-error" class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </span>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <textarea id="textInput" rows="8" class="w-full p-3 border-2 border-slate-300 dark:border-slate-600 rounded-lg bg-gray-50 dark:bg-slate-800 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 dark:focus:ring-sky-400 dark:focus:border-sky-400 transition-colors text-sm text-slate-700 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-500" placeholder="Or paste your markdown content here..."></textarea>
+                </div>
+
+                <div class="flex items-center justify-center w-full">
+                    <label for="fileInput" id="drop-zone" class="flex flex-col items-center justify-center w-full h-40 border-2 border-slate-300 dark:border-slate-600 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700/50 transition-colors">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center">
+                            <i data-lucide="file-up" class="w-10 h-10 mb-4 text-slate-400 dark:text-slate-500"></i>
+                            <p id="file-label" class="mb-2 text-sm text-slate-500 dark:text-slate-400"><span class="font-semibold text-sky-500 dark:text-sky-400">Click to upload</span> or drag and drop</p>
+                            <p class="text-xs text-slate-400 dark:text-slate-500">A single Markdown (.md) file</p>
+                        </div>
+                        <input id="fileInput" type="file" class="hidden" accept=".md" />
+                    </label>
+                </div> 
+                
+                <button id="processButton" class="w-full bg-sky-500 hover:bg-sky-600 disabled:bg-slate-400 dark:disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-center shadow-lg shadow-sky-400/30 dark:shadow-sky-900/50 focus:outline-none focus:ring-4 focus:ring-sky-400/50">
+                    <span id="button-text">Process & Download ZIP</span>
+                    <i id="spinner" data-lucide="loader-2" class="animate-spin hidden ml-2 h-5 w-5"></i>
+                </button>
+
+                <div class="w-full bg-slate-100 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700 rounded-lg text-left p-4">
+                     <p class="text-sm font-semibold text-slate-600 dark:text-slate-300 mb-2 flex items-center">
+                        <i data-lucide="terminal" class="w-4 h-4 mr-2"></i>
+                        Status Log
+                     </p>
+                    <div class="max-h-60 overflow-y-auto bg-white dark:bg-slate-800/50 p-3 rounded-md">
+                      <pre><code id="logOutput" class="text-sm text-slate-500 dark:text-slate-400 whitespace-pre-wrap break-words">Awaiting input...</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js" type="module"></script>
+</body>
+</html>
